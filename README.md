@@ -28,22 +28,27 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Short version:
 
 ## Deploy
 
-Hosted on Cloudflare Pages via its native Git integration &mdash; CF clones the repo and builds on every push to `main`. No GitHub Action is involved in the deploy path; the `Lint recipes` workflow only gates PRs.
+Hosted on Cloudflare via the [Workers + Static Assets](https://gohugo.io/host-and-deploy/host-on-cloudflare/) flow that the Hugo project officially documents. CF clones the repo, runs `build.sh`, and serves `public/`. No GitHub Action is involved in the deploy path; the `Lint recipes` workflow only gates PRs.
 
-### Cloudflare Pages setup (one-time)
+The two files that drive the deploy live at the repo root:
 
-Workers &amp; Pages &rarr; Create application &rarr; Pages &rarr; **Connect to Git** &rarr; select this repo.
+- `wrangler.toml` &mdash; tells CF the build command (`./build.sh`) and the assets directory (`./public`)
+- `build.sh` &mdash; downloads Hugo at the pinned version and runs `hugo build --gc --minify`. The Hugo version is pinned in two places (`build.sh` and `.github/workflows/lint-recipes.yml`), both tagged with `# renovate: datasource=github-releases depName=gohugoio/hugo` so Renovate bumps them together in one PR (config: `renovate.json`)
 
-- **Project name**: `gnfriends-cookbook`
+### Cloudflare dashboard (one-time)
+
+Workers &amp; Pages &rarr; **Import a repository** &rarr; select this repo.
+
+- **Project name**: `gnfriends-cookbook` (must match `name` in `wrangler.toml`)
 - **Production branch**: `main`
-- **Framework preset**: None
-- **Build command**: `hugo --minify --gc`
-- **Build output directory**: `public`
-- **Environment variable** (production): `HUGO_VERSION=0.161.1` &mdash; pin this; CF defaults to a stale Hugo
-- **Preview deployments**: disabled (Settings &rarr; Builds &amp; deployments &rarr; Preview deployments &rarr; *None*)
-- **Custom domain**: `cookbook.gouthamve.dev` (Custom domains &rarr; Add)
+- **Build command**: leave blank &mdash; `wrangler.toml` supplies it
 
-The `HUGO_VERSION` must match the version pinned in `.github/workflows/lint-recipes.yml` so a build that passes CI also passes on CF.
+Click **Create and deploy**.
+
+Then, in the new project:
+
+- **Preview deployments**: disable (Settings &rarr; Builds &amp; deployments &rarr; Preview deployments &rarr; *None*)
+- **Custom domain**: add `cookbook.gouthamve.dev` (Custom domains &rarr; Add)
 
 ## Structure
 

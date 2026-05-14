@@ -1,0 +1,17 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Bump Hugo version pinned in build.sh and the lint workflow together",
+      "managerFilePatterns": [
+        "/^build\\.sh$/",
+        "/^\\.github/workflows/[^/]+\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\s+\\S+?[=:]\\s*\"?(?<currentValue>[\\d.]+)"
+      ]
+    }
+  ]
+}

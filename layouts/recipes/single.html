@@ -1,0 +1,14 @@
+{{ define "main" }}
+<article class="recipe">
+  <header>
+    <h1>{{ .Title }}</h1>
+    {{ partial "recipe-meta.html" . }}
+  </header>
+
+  {{ partial "ingredients.html" . }}
+
+  <section class="instructions">
+    {{ .Content }}
+  </section>
+</article>
+{{ end }}

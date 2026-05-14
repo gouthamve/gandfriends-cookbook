@@ -1,0 +1,33 @@
+{{ define "main" }}
+<article class="home">
+  <h1>{{ .Title }}</h1>
+  {{ with .Content }}{{ . }}{{ end }}
+
+  <section class="toc">
+    <h2>Table of Contents</h2>
+    {{ $sections := site.Params.sections }}
+    {{ $recipesSection := site.GetPage "/recipes" }}
+    {{ range $sections }}
+      {{ $sec := $recipesSection.GetPage . }}
+      {{ with $sec }}
+        {{ $pages := where .Pages "Kind" "page" }}
+        {{ if gt (len $pages) 0 }}
+        <h3 id="{{ .File.Dir | urlize }}"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        <ul class="toc-list">
+          {{ range $pages.ByTitle }}
+          <li>
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            {{- with .Params.authors }}
+              <span class="toc-author"> &mdash;
+                {{- range $i, $a := . }}{{ if $i }}, {{ end }}{{ humanize $a }}{{ end -}}
+              </span>
+            {{- end }}
+          </li>
+          {{ end }}
+        </ul>
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  </section>
+</article>
+{{ end }}

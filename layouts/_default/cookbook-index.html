@@ -1,0 +1,103 @@
+{{ define "main" }}
+<article class="cookbook-index">
+  <h1>{{ .Title }}</h1>
+  {{ with .Content }}{{ . }}{{ end }}
+
+  {{- /* Collect every (key, page) pair across recipes, then group by key.
+         Hugo's `range` over a map iterates in sorted key order. */ -}}
+  {{- $recipes := where site.RegularPages "Section" "recipes" -}}
+
+  {{- $ingredients := dict -}}
+  {{- $cuisines := dict -}}
+  {{- $tags := dict -}}
+  {{- range $recipes -}}
+    {{- $page := . -}}
+    {{- range .Params.ingredient_keys -}}
+      {{- $k := . | lower | strings.TrimSpace -}}
+      {{- if $k -}}
+        {{- $existing := index $ingredients $k | default slice -}}
+        {{- $ingredients = merge $ingredients (dict $k ($existing | append $page)) -}}
+      {{- end -}}
+    {{- end -}}
+    {{- range .Params.cuisines -}}
+      {{- $k := . | lower | strings.TrimSpace -}}
+      {{- if $k -}}
+        {{- $existing := index $cuisines $k | default slice -}}
+        {{- $cuisines = merge $cuisines (dict $k ($existing | append $page)) -}}
+      {{- end -}}
+    {{- end -}}
+    {{- range .Params.tags -}}
+      {{- $k := . | lower | strings.TrimSpace -}}
+      {{- if $k -}}
+        {{- $existing := index $tags $k | default slice -}}
+        {{- $tags = merge $tags (dict $k ($existing | append $page)) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  <nav class="index-jump no-print">
+    <a href="#ingredients">Ingredients</a> &middot;
+    <a href="#cuisines">Cuisines</a> &middot;
+    <a href="#tags">Tags</a>
+  </nav>
+
+  {{- $renderEntries := dict -}}
+
+  <section class="index-section">
+    <h2 id="ingredients">Ingredients</h2>
+    {{- if eq (len $ingredients) 0 }}
+    <p><em>No ingredients indexed yet.</em></p>
+    {{- else }}
+    <dl class="index-entries">
+      {{- range $key, $pages := $ingredients }}
+      <dt>{{ $key }}</dt>
+      <dd>
+        {{- range $i, $p := $pages -}}
+          {{- if $i }}, {{ end -}}
+          <a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a>
+        {{- end -}}
+      </dd>
+      {{- end }}
+    </dl>
+    {{- end }}
+  </section>
+
+  <section class="index-section">
+    <h2 id="cuisines">Cuisines</h2>
+    {{- if eq (len $cuisines) 0 }}
+    <p><em>No cuisines indexed yet.</em></p>
+    {{- else }}
+    <dl class="index-entries">
+      {{- range $key, $pages := $cuisines }}
+      <dt>{{ humanize $key }}</dt>
+      <dd>
+        {{- range $i, $p := $pages -}}
+          {{- if $i }}, {{ end -}}
+          <a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a>
+        {{- end -}}
+      </dd>
+      {{- end }}
+    </dl>
+    {{- end }}
+  </section>
+
+  <section class="index-section">
+    <h2 id="tags">Tags</h2>
+    {{- if eq (len $tags) 0 }}
+    <p><em>No tags indexed yet.</em></p>
+    {{- else }}
+    <dl class="index-entries">
+      {{- range $key, $pages := $tags }}
+      <dt>{{ humanize $key }}</dt>
+      <dd>
+        {{- range $i, $p := $pages -}}
+          {{- if $i }}, {{ end -}}
+          <a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a>
+        {{- end -}}
+      </dd>
+      {{- end }}
+    </dl>
+    {{- end }}
+  </section>
+</article>
+{{ end }}

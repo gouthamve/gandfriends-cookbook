@@ -1,0 +1,18 @@
+{{- /* Best-effort total time: if both prep and cook are plain "N min", sum them.
+       Otherwise fall back to "prep + cook" string. */ -}}
+{{- $prep := .Params.prep_time -}}
+{{- $cook := .Params.cook_time -}}
+{{- if and $prep $cook -}}
+  {{- $p := findRESubmatch `^\s*(\d+)\s*min` $prep -}}
+  {{- $c := findRESubmatch `^\s*(\d+)\s*min` $cook -}}
+  {{- if and $p $c -}}
+    {{- $sum := add (int (index (index $p 0) 1)) (int (index (index $c 0) 1)) -}}
+    {{- printf "%d min total" $sum -}}
+  {{- else -}}
+    {{- printf "%s + %s" $prep $cook -}}
+  {{- end -}}
+{{- else if $prep -}}
+  {{- $prep -}}
+{{- else if $cook -}}
+  {{- $cook -}}
+{{- end -}}

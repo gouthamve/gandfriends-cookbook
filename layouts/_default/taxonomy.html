@@ -1,0 +1,41 @@
+{{ define "main" }}
+{{- if eq .Kind "term" -}}
+<article class="taxonomy-term">
+  <h1>{{ .Title | humanize }}</h1>
+  {{- with .Content }}{{ . }}{{ end }}
+
+  {{- $pages := where .Pages "Kind" "page" }}
+  {{- if gt (len $pages) 0 }}
+  <h2>Recipes</h2>
+  <ul class="recipe-list">
+    {{- range $pages.ByTitle }}
+    <li>
+      <a href="{{ .RelPermalink }}"><strong>{{ .Title }}</strong></a>
+      <span class="meta">
+        {{- $course := index (split (strings.TrimPrefix "/recipes/" .RelPermalink) "/") 0 -}}
+        {{- with $course }} &middot; {{ humanize . }}{{ end }}
+        {{- with .Params.servings }} &middot; {{ . }}{{ end }}
+      </span>
+    </li>
+    {{- end }}
+  </ul>
+  {{- else }}
+  <p><em>No recipes yet.</em></p>
+  {{- end }}
+</article>
+{{- else -}}
+<article class="taxonomy-list">
+  <h1>{{ .Title }}</h1>
+  {{- with .Content }}{{ . }}{{ end }}
+
+  <ul class="taxonomy-terms">
+    {{- range .Data.Terms.Alphabetical }}
+    <li>
+      <a href="{{ .Page.RelPermalink }}">{{ .Page.Title | humanize }}</a>
+      <span class="meta">&middot; {{ .Count }} recipe{{ if ne .Count 1 }}s{{ end }}</span>
+    </li>
+    {{- end }}
+  </ul>
+</article>
+{{- end -}}
+{{ end }}

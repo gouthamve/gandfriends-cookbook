@@ -1,0 +1,28 @@
+{{ define "main" }}
+<article class="section-list">
+  <h1>{{ .Title }}</h1>
+  {{ with .Content }}{{ . }}{{ end }}
+
+  {{ $pages := where .Pages "Kind" "page" }}
+  {{ if gt (len $pages) 0 }}
+  <ul class="recipe-list">
+    {{ range $pages.ByTitle }}
+    <li>
+      <a href="{{ .RelPermalink }}"><strong>{{ .Title }}</strong></a>
+      <span class="meta">
+        {{- with .Params.authors }}
+          by
+          {{- range $i, $a := . }}{{ if $i }}, {{ end }} {{ humanize $a }}{{ end -}}
+        {{- end }}
+        {{- with .Params.servings }} &middot; {{ . }}{{ end }}
+        {{- $total := partial "total-time.html" . -}}
+        {{- with $total }} &middot; {{ . }}{{ end }}
+      </span>
+    </li>
+    {{ end }}
+  </ul>
+  {{ else }}
+  <p><em>No recipes yet in this section.</em></p>
+  {{ end }}
+</article>
+{{ end }}

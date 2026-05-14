@@ -1,0 +1,27 @@
+{{- /* Renders the meta block for a recipe: author, servings, times, cuisine. */ -}}
+{{- $authors := .Params.authors | default slice -}}
+{{- $cuisines := .Params.cuisines | default slice -}}
+
+<dl class="recipe-meta">
+  {{- with $authors }}
+  <dt>By</dt>
+  <dd>
+    {{- range $i, $a := . -}}
+      {{- if $i }}, {{ end -}}
+      <a href="{{ printf "/authors/%s/" (urlize $a) | relURL }}">{{ humanize $a }}</a>
+    {{- end -}}
+  </dd>
+  {{- end }}
+  {{- with .Params.servings }}<dt>Yield</dt><dd>{{ . }}</dd>{{ end }}
+  {{- with .Params.prep_time }}<dt>Prep</dt><dd>{{ . }}</dd>{{ end }}
+  {{- with .Params.cook_time }}<dt>Cook</dt><dd>{{ . }}</dd>{{ end }}
+  {{- with $cuisines }}
+  <dt>Cuisine</dt>
+  <dd>
+    {{- range $i, $c := . -}}
+      {{- if $i }}, {{ end -}}
+      <a href="{{ printf "/cuisines/%s/" (urlize $c) | relURL }}">{{ humanize $c }}</a>
+    {{- end -}}
+  </dd>
+  {{- end }}
+</dl>

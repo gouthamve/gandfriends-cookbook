@@ -1,0 +1,38 @@
+name: Lint recipes
+
+on:
+  pull_request:
+    paths:
+      - "content/recipes/**/*.md"
+      - "content/authors/**/_index.md"
+      - ".github/workflows/lint-recipes.yml"
+      - "scripts/lint-recipes.py"
+  push:
+    branches: [main]
+    paths:
+      - "content/recipes/**/*.md"
+      - "content/authors/**/_index.md"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install PyYAML
+        run: pip install pyyaml
+      - name: Lint recipe frontmatter
+        run: python scripts/lint-recipes.py
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.161.1"
+      - name: Build site
+        run: hugo --minify --gc

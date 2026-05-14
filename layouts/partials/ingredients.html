@@ -1,0 +1,10 @@
+{{- with .Params.ingredients }}
+<section class="ingredients">
+  <h2>Ingredients</h2>
+  <ul>
+    {{- range . }}
+    <li>{{ . }}</li>
+    {{- end }}
+  </ul>
+</section>
+{{- end }}

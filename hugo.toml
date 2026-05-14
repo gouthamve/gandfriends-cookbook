@@ -1,0 +1,32 @@
+baseURL = "https://cookbook.gouthamve.dev/"
+title = "G & friends cookbook"
+
+[languages]
+  [languages.en]
+    locale = "en-us"
+    label = "English"
+    weight = 1
+enableRobotsTXT = true
+enableEmoji = false
+
+[taxonomies]
+  author = "authors"
+  tag = "tags"
+  cuisine = "cuisines"
+
+[outputs]
+  home = ["HTML", "RSS"]
+
+[permalinks]
+  "recipes" = "/recipes/:sections[1:]/:slug/"
+
+[params]
+  description = "A cookbook of recipes shared by friends."
+  sections = ["breakfast", "starters", "mains", "sides", "desserts", "drinks", "snacks"]
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 4

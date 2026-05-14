@@ -1,0 +1,245 @@
+/* gn friends cookbook — text-only, cooking-friendly, printable */
+
+:root {
+  --fg: #1a1a1a;
+  --fg-muted: #555;
+  --bg: #fdfdfc;
+  --accent: #8a3324;
+  --rule: #d8d4cc;
+  --code-bg: #f3f1ec;
+  --max-width: 70ch;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: Georgia, "Iowan Old Style", "Times New Roman", Times, serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--fg);
+  background: var(--bg);
+  margin: 0;
+  padding: 0 1.25rem;
+}
+
+main {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1rem 0 4rem;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+a:hover { text-decoration-thickness: 2px; }
+
+h1, h2, h3, h4 {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  line-height: 1.25;
+  margin-top: 1.75em;
+  margin-bottom: 0.4em;
+}
+h1 { font-size: 2rem; margin-top: 0.5em; }
+h2 { font-size: 1.4rem; border-bottom: 1px solid var(--rule); padding-bottom: 0.2em; }
+h3 { font-size: 1.15rem; }
+
+p, ul, ol, dl { margin: 0.8em 0; }
+li { margin: 0.2em 0; }
+
+hr { border: 0; border-top: 1px solid var(--rule); margin: 2em 0; }
+
+code {
+  background: var(--code-bg);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+/* ---------- header / nav ---------- */
+.site-header {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1.25rem 0 0.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+.site-header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.site-title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-decoration: none;
+  color: var(--fg);
+}
+.nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.1rem;
+}
+.nav-links a { color: var(--fg-muted); text-decoration: none; }
+.nav-links a:hover { color: var(--accent); text-decoration: underline; }
+
+/* ---------- footer ---------- */
+.site-footer {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1rem 0 2rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.9rem;
+  color: var(--fg-muted);
+}
+
+/* ---------- home ToC ---------- */
+.toc h3 {
+  margin-top: 1.5em;
+  font-size: 1.2rem;
+}
+.toc h3 a { color: var(--fg); text-decoration: none; }
+.toc h3 a:hover { color: var(--accent); text-decoration: underline; }
+.toc-list {
+  list-style: none;
+  padding-left: 0;
+}
+.toc-list li {
+  padding: 0.1em 0;
+}
+.toc-author { color: var(--fg-muted); font-size: 0.95em; }
+
+/* ---------- recipe / list ---------- */
+.recipe-list { list-style: none; padding-left: 0; }
+.recipe-list li { padding: 0.35em 0; border-bottom: 1px dotted var(--rule); }
+.recipe-list .meta { color: var(--fg-muted); font-size: 0.92em; }
+
+.recipe-meta {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.25em 1em;
+  margin: 0.5em 0 1.5em;
+  padding: 0.75em 1em;
+  background: var(--code-bg);
+  border-left: 3px solid var(--accent);
+  font-size: 0.95rem;
+}
+.recipe-meta dt {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-weight: 600;
+  color: var(--fg-muted);
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  align-self: center;
+}
+.recipe-meta dd { margin: 0; }
+
+.ingredients {
+  border: 1px solid var(--rule);
+  padding: 0.5em 1.25em;
+  margin: 1em 0 1.5em;
+}
+.ingredients h2 {
+  margin-top: 0.7em;
+  border-bottom: none;
+}
+.ingredients ul { padding-left: 1.2em; }
+
+.instructions ol li { margin: 0.6em 0; }
+
+.print-link {
+  margin-top: 2.5em;
+  font-size: 0.95rem;
+  color: var(--fg-muted);
+}
+
+/* ---------- cookbook index (back-of-book style) ---------- */
+.index-jump {
+  margin: 1em 0 2em;
+  padding: 0.5em 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.95rem;
+  color: var(--fg-muted);
+}
+.index-jump a { color: var(--fg-muted); }
+.index-jump a:hover { color: var(--accent); }
+
+.index-section { margin-top: 2em; }
+.index-section h2 { margin-top: 1em; }
+
+.index-entries {
+  margin: 1em 0;
+  /* Two-column layout on wide screens; single column on narrow */
+  column-count: 2;
+  column-gap: 2.5em;
+}
+@media (max-width: 600px) {
+  .index-entries { column-count: 1; }
+}
+
+.index-entries dt {
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  margin-top: 0.6em;
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+}
+.index-entries dt:first-child { margin-top: 0; }
+.index-entries dd {
+  margin: 0.1em 0 0 1em;
+  font-size: 0.95rem;
+  color: var(--fg-muted);
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+}
+.index-entries dd a { color: var(--fg); }
+.index-entries dd a:hover { color: var(--accent); }
+
+/* ---------- responsive ---------- */
+@media (max-width: 480px) {
+  body { font-size: 17px; padding: 0 1rem; }
+  h1 { font-size: 1.7rem; }
+  .recipe-meta { grid-template-columns: 1fr; gap: 0.15em 0; padding: 0.75em; }
+  .recipe-meta dt { margin-top: 0.4em; }
+}
+
+/* ---------- print ---------- */
+@media print {
+  @page { margin: 1.5cm; }
+  html, body { background: #fff; color: #000; font-size: 11pt; }
+  body { padding: 0; }
+  main { max-width: none; padding: 0; }
+
+  .site-header, .site-footer, .nav-links, .print-link, .no-print {
+    display: none !important;
+  }
+
+  a { color: #000; text-decoration: none; }
+  /* Don't append URL after every link — it clutters printed recipes */
+  a[href]::after { content: ""; }
+
+  h1, h2, h3 { page-break-after: avoid; }
+  ul, ol, li, dl, dt, dd { page-break-inside: avoid; orphans: 3; widows: 3; }
+
+  .ingredients { border: 1px solid #999; page-break-inside: avoid; }
+  .recipe-meta {
+    background: transparent;
+    border-left: 2px solid #000;
+    page-break-inside: avoid;
+  }
+
+  /* Keep the heading "Ingredients" with at least its first item */
+  .ingredients h2 + ul { page-break-before: avoid; }
+
+  article.recipe > section.instructions > ol > li:first-child { page-break-before: avoid; }
+}
